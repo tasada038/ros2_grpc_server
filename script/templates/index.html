@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gRPC Web App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="container mx-auto p-8">
+    <h1 class="text-3xl font-bold text-center mb-8">gRPC Web App</h1>
+
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+        <div class="mb-4">
+            <label for="floatValue" class="block text-gray-700">Set Float32 Value:</label>
+            <input type="number" id="floatValue" class="mt-2 p-2 border rounded w-full" placeholder="Enter float value">
+            <button onclick="setFloat32()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Set Value
+            </button>
+        </div>
+
+        <div class="mb-4">
+            <!-- <button onclick="getFloat32()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                Get Current Float32 Value
+            </button> -->
+            <p class="mt-4 text-gray-700" id="currentValue">Current Value: --</p>
+        </div>
+
+        <div id="errorMessage" class="text-red-500 mt-4 hidden"></div>
+    </div>
+</div>
+
+<script>
+    async function getFloat32() {
+        try {
+            const response = await fetch('/get_float32');
+            const data = await response.json();
+            if (data.success) {
+                document.getElementById('currentValue').textContent = `Current Value: ${data.value}`;
+                document.getElementById('errorMessage').classList.add('hidden');
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            document.getElementById('errorMessage').textContent = `Error: ${error.message}`;
+            document.getElementById('errorMessage').classList.remove('hidden');
+        }
+    }
+
+    async function setFloat32() {
+        const value = document.getElementById('floatValue').value;
+        try {
+            const response = await fetch('/set_float32', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ value: parseFloat(value) })
+            });
+            const data = await response.json();
+            if (data.success) {
+                document.getElementById('currentValue').textContent = `Updated Value: ${data.updated_value}`;
+                document.getElementById('errorMessage').classList.add('hidden');
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            document.getElementById('errorMessage').textContent = `Error: ${error.message}`;
+            document.getElementById('errorMessage').classList.remove('hidden');
+        }
+    }
+
+    // Fetch the Float32 value every 2 seconds
+    setInterval(getFloat32, 1000);
+</script>
+
+</body>
+</html>

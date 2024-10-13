@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package robot_service;
+
+// ========== Message Definitions ==========
+message Pose {
+  double x = 1;
+  double y = 2;
+  double theta = 3;
+}
+
+message Vector3 {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}
+
+message Quaternion {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+  double w = 4;
+}

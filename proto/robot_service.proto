@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package robot_service;
+
+// ========== Import Protobuf ==========
+import "std_msgs.proto";
+import "nav_msgs.proto";
+
+// ========== Request Message ==========
+message Float32Request {
+  Float32 float_data = 1;
+}
+
+message PoseRequest {
+  Pose pose = 1;
+}
+
+// ========== Response Message ==========
+message Float32Response {
+  Float32 float_data = 1;
+}
+
+message PoseResponse {
+    Pose pose = 1;
+}
+
+// ========== Service Definitions ==========
+service RobotService {
+  rpc GetFloat32(Float32Request) returns (Float32Response);
+  rpc SetFloat32(Float32Request) returns (Float32Response);
+  rpc SetPose(PoseRequest) returns (PoseResponse);
+}
