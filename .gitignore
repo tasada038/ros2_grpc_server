@@ -1,0 +1,10 @@
+# VSCode debug launch file
+.vscode/
+
+# Distribution / packaging
+.Python
+env/
+build/
+
+# Pycache
+**/__pycache__/**
